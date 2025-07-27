@@ -1,0 +1,50 @@
+.item-card {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.item-name {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 1.1em;
+}
+
+.qty-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qty-group input {
+  width: 70px;
+  padding: 5px;
+}
+
+.matched {
+  background-color: #d1f7d1;
+  border-color: #90ee90;
+}
+
+.mismatch {
+  background-color: #ffe6e6;
+  border-color: #ff7a7a;
+}
+
+@media (max-width: 600px) {
+  .item-card {
+    font-size: 0.9em;
+    padding: 10px;
+  }
+  .qty-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .qty-group input {
+    width: 100%;
+    margin-top: 5px;
+  }
+}
