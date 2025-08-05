@@ -20,23 +20,23 @@ __pycache__/
 *.sqlite3
 *.log
 *.pot
-*.pyc
 env/
 venv/
 ENV/
 env.bak/
 *.db
 *.db-journal
-*.sqlite3
 
 # Django specific
 /staticfiles/
 media/
 
 # Secret keys
-backend/credentials/*.json
-backend/credentials/sheet_service_account.json
-backend/credentials/drive_service_account.json
+backend/credentials/
+*.env
+*.json
+
+# Git utilities
 git-filter-repo/
 
 # --------------------------------
@@ -55,6 +55,7 @@ Thumbs.db
 # Coverage / Testing
 coverage/
 htmlcov/
+.pytest_cache/
 
 # Compiled code
 *.so
@@ -63,6 +64,3 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints
-# Pytest cache
-.pytest_cache/
-
