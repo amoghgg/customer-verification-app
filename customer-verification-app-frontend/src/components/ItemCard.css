@@ -1,50 +1,124 @@
 .item-card {
-  border: 1px solid #ccc;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  padding: 16px 20px;
+  margin: 18px 0;
+  border-radius: 16px;
+  background-color: #f9fbfc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
-  background-color: #f9f9f9;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.item-card.mismatch {
+  background-color: #fff5f5;
+  border-color: #ffb3b3;
 }
 
 .item-name {
-  font-weight: bold;
-  margin-bottom: 8px;
-  font-size: 1.1em;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1e2b3c;
+  margin-bottom: 12px;
 }
 
-.qty-group {
+.item-qty {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
-.qty-group input {
-  width: 70px;
-  padding: 5px;
+.item-qty span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #34495e;
 }
 
-.matched {
-  background-color: #d1f7d1;
-  border-color: #90ee90;
+.item-qty input {
+  width: 100px;
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: white;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  outline: none;
+  transition: border-color 0.2s ease;
 }
 
-.mismatch {
-  background-color: #ffe6e6;
-  border-color: #ff7a7a;
+.item-qty input:focus {
+  border-color: #007bff;
 }
 
+.video-recorder {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* 🎥 Button Styles */
+.btn-active {
+  background-color: #0057c2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-active:hover {
+  background-color: #003f91;
+  transform: translateY(-1px);
+}
+
+.btn-disabled {
+  background-color: #c0c0c0;
+  color: #f4f4f4;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.item-card video {
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* 📱 Mobile Responsive */
 @media (max-width: 600px) {
   .item-card {
-    font-size: 0.9em;
-    padding: 10px;
+    font-size: 0.95rem;
+    padding: 14px 16px;
   }
-  .qty-group {
+
+  .item-qty {
     flex-direction: column;
     align-items: flex-start;
   }
-  .qty-group input {
+
+  .item-qty input {
     width: 100%;
-    margin-top: 5px;
+    margin-top: 8px;
+  }
+
+  .video-recorder {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .item-card video {
+    width: 100%;
   }
 }

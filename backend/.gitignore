@@ -1,23 +1,68 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
+# --------------------------------
+# Node / React Frontend
+# --------------------------------
+node_modules/
+build/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# --------------------------------
+# Python / Django Backend
+# --------------------------------
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+*.pot
+*.pyc
+env/
+venv/
+ENV/
+env.bak/
+*.db
+*.db-journal
+*.sqlite3
+
+# Django specific
+/staticfiles/
+media/
+
+# Secret keys
+backend/credentials/*.json
+backend/credentials/sheet_service_account.json
+backend/credentials/drive_service_account.json
+git-filter-repo/
+
+# --------------------------------
+# System Files
+# --------------------------------
+.DS_Store
+Thumbs.db
+
+# --------------------------------
+# IDE Config
+# --------------------------------
+.vscode/
+.idea/
+*.swp
+
+# Coverage / Testing
+coverage/
+htmlcov/
+
+# Compiled code
+*.so
+*.egg-info/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints
+# Pytest cache
+.pytest_cache/
+

@@ -1,64 +1,121 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ItemCard from './ItemCard';
+import { ReactMediaRecorder } from 'react-media-recorder';
+import axios from 'axios';
 
 const DeliveryVerification = () => {
-  const [cid, setCid] = useState('');
+  const { cid } = useParams();
+  const navigate = useNavigate();
   const [customer, setCustomer] = useState(null);
+  const [error, setError] = useState('');
+  const [videoBlob, setVideoBlob] = useState(null);
 
-  const fetchData = async () => {
-    try {
-      const res = await fetch(`/api/customer-details/?cid=${cid}`);
-      const data = await res.json();
-      if (res.ok) {
-        const withReceived = data.items.map(item => ({ ...item, received: item.sent }));
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const res = await fetch(`/api/customer-details/?cid=${cid}`);
+        const data = await res.json();
+        const withReceived = data.items.map(item => ({ ...item, received: '' }));
         setCustomer({ ...data, items: withReceived });
-      } else {
-        alert(data.error || 'Customer not found');
+      } catch (err) {
+        setError('Failed to fetch customer data');
       }
-    } catch (err) {
-      alert('Failed to fetch');
-    }
-  };
+    };
+
+    if (cid) fetchCustomer();
+  }, [cid]);
 
   const handleReceivedChange = (index, value) => {
-    const updatedItems = [...customer.items];
-    updatedItems[index].received = value;
-    setCustomer({ ...customer, items: updatedItems });
+    const updated = [...customer.items];
+    updated[index].received = parseInt(value) || 0;
+    setCustomer({ ...customer, items: updated });
   };
 
-  const handleSubmit = () => {
-    const mismatched = customer.items.filter(i => i.sent !== i.received);
-    if (mismatched.length > 0) {
-      alert(`Shortage in ${mismatched.length} items. Video recording should start.`);
-      // ⏺ Integrate video recording logic if needed
+  const uploadVideo = async () => {
+    if (!videoBlob || !cid) return;
+
+    const formData = new FormData();
+    formData.append("file", videoBlob, `${cid}_proof.mp4`);
+    formData.append("cid", cid);
+
+    try {
+      await axios.post("/api/upload-proof-video/", formData);
+    } catch (err) {
+      alert("❌ Video upload failed");
     }
-    console.log('📦 Submitted:', customer);
   };
+
+  const handleSubmit = async () => {
+    const unfilled = customer.items.some(item => item.received === '');
+    if (unfilled) {
+      alert("Please fill all received quantities (use 0 if not received).");
+      return;
+    }
+
+    const received = {};
+    customer.items.forEach(item => {
+      received[item.name] = item.received;
+    });
+
+    try {
+      await fetch('/api/confirm-delivery/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cid: customer.cid, received }),
+      });
+
+      if (videoBlob) {
+        await uploadVideo();
+      }
+
+      navigate('/thankyou');
+    } catch {
+      alert("❌ Failed to confirm delivery");
+    }
+  };
+
+  if (error) return <div>{error}</div>;
+  if (!customer) return <div>Loading...</div>;
+
+  const hasMismatch = customer.items.some(item =>
+    item.received !== '' && item.sent !== item.received
+  );
 
   return (
-    <div style={{ padding: 20, maxWidth: 600, margin: 'auto' }}>
+    <div style={{ padding: 20, maxWidth: 700, margin: 'auto' }}>
       <h2>Customer Delivery Verification</h2>
-      <input
-        value={cid}
-        onChange={(e) => setCid(e.target.value)}
-        placeholder="Enter Request ID"
-        style={{ width: '100%', padding: '8px' }}
-      />
-      <button onClick={fetchData} style={{ marginTop: 10 }}>Fetch</button>
+      <h3>{customer.name}</h3>
+      <p><strong>Project:</strong> {customer.project}</p>
+      <p><strong>Address:</strong> {customer.address}</p>
 
-      {customer && (
-        <div>
-          <h3>{customer.name}</h3>
-          <p><strong>Project:</strong> {customer.project}</p>
-          <p><strong>Address:</strong> {customer.address}</p>
+      {customer.items.map((item, idx) => (
+        <ItemCard
+          key={idx}
+          item={item}
+          value={item.received}
+          onChange={(name, value) => handleReceivedChange(idx, value)}
+        />
+      ))}
 
-          {customer.items.map((item, idx) => (
-            <ItemCard key={idx} item={item} index={idx} onChange={handleReceivedChange} />
-          ))}
-
-          <button onClick={handleSubmit} style={{ marginTop: 20 }}>Submit</button>
+      {hasMismatch && (
+        <div style={{ marginTop: 30 }}>
+          <h4>🎥 Optional Proof Video</h4>
+          <ReactMediaRecorder
+            video
+            onStop={(blobUrl, blob) => setVideoBlob(blob)}
+            render={({ startRecording, stopRecording, mediaBlobUrl }) => (
+              <div>
+                <button onClick={startRecording}>Start Recording</button>
+                <button onClick={stopRecording} style={{ marginLeft: 10 }}>Stop</button>
+                {mediaBlobUrl && <video src={mediaBlobUrl} controls width="300" />}
+              </div>
+            )}
+          />
         </div>
       )}
+
+      <button onClick={handleSubmit} style={{ marginTop: 30 }}>Submit</button>
     </div>
   );
 };

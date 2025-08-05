@@ -1,23 +1,21 @@
 import React from 'react';
 import './ItemCard.css';
 
-const ItemCard = ({ item, index, onChange }) => {
-  const isMatch = item.sent === item.received;
+const ItemCard = ({ item, value, onChange }) => {
+  const sent = parseInt(item.sent);
 
   return (
-    <div className={`item-card ${isMatch ? 'matched' : 'mismatch'}`}>
-      <div className="item-name">{index + 1}. {item.name}</div>
-      <div className="qty-group">
-        <div><strong>Sent:</strong> {item.sent}</div>
-        <div>
-          <strong>Received:</strong>{' '}
-          <input
-            type="number"
-            min="0"
-            value={item.received}
-            onChange={(e) => onChange(index, parseInt(e.target.value, 10))}
-          />
-        </div>
+    <div className="item-card">
+      <div className="item-name">{item.name}</div>
+      <div className="item-qty">
+        <span>Sent: {item.sent}</span>
+        <input
+          type="number"
+          min="0"
+          value={value}
+          placeholder="Received"
+          onChange={(e) => onChange(item.name, e.target.value)}
+        />
       </div>
     </div>
   );

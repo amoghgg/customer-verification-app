@@ -1,7 +1,14 @@
+/* === Global Styles === */
 .App {
-  text-align: center;
+  max-width: 880px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  color: #0D254C;
+  background-color: #f9fbfd;
 }
 
+/* === Logo & Header (optional) === */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -13,21 +20,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,33 +28,91 @@
     transform: rotate(360deg);
   }
 }
-.App {
-  max-width: 800px;
-  margin: auto;
-  padding: 2rem;
-  font-family: Arial, sans-serif;
+
+/* === Header === */
+.App-header {
+  background-color: #0D254C;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(12px + 2vmin);
+  color: white;
+}
+
+/* === Inputs & Buttons === */
+.input-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 input[type="text"], input[type="number"] {
-  padding: 8px;
-  margin: 8px 0;
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccd6e0;
+  border-radius: 6px;
   width: 100%;
+  background-color: #ffffff;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  border-color: #00b7eb;
+  outline: none;
 }
 
 button {
-  margin-top: 1rem;
-  padding: 10px 20px;
-  font-weight: bold;
+  padding: 10px 18px;
+  background-color: #00B7EB;
+  color: white;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
+button:hover {
+  background-color: #009fcc;
+}
+
+.submit-btn {
+  margin-top: 2rem;
+}
+
+/* === Table Styling === */
 table {
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   border-collapse: collapse;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px rgba(13, 37, 76, 0.06);
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
+th {
+  background-color: #0D254C;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
   text-align: left;
+}
+
+td {
+  padding: 12px;
+  border-top: 1px solid #e1e7ec;
+}
+
+/* === Custom Card (optional use) === */
+.card {
+  background-color: white;
+  padding: 1.5rem;
+  border-left: 4px solid #00B7EB;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(13, 37, 76, 0.08);
+  margin-bottom: 1.5rem;
 }
