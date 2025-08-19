@@ -8,7 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/verify/FA4492" replace />} />
         <Route path="/verify/:cid" element={<DeliveryVerification />} />
-        <Route path="/thank-you" element={<ThankYou />} />
+        <Route path="/ThankYou" element={<ThankYou />} />
       </Routes>
     </Router>
   );

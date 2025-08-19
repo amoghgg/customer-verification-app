@@ -1,6 +1,5 @@
-import React from 'react';
 
-const thankyou = () => {
+const ThankYou = () => {
   return (
     <div style={{ padding: 50, textAlign: 'center' }}>
       <h2>🎉 Thank you for your confirmation!</h2>
@@ -9,4 +8,4 @@ const thankyou = () => {
   );
 };
 
-export default thankyou;
+export default ThankYou;

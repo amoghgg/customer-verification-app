@@ -11,20 +11,31 @@ const DeliveryVerification = () => {
   const [error, setError] = useState('');
   const [videoBlob, setVideoBlob] = useState(null);
 
+  // Detect environment and pick the correct backend URL
+  const BASE_URL = process.env.REACT_APP_BACKEND_URL?.trim();
+
   useEffect(() => {
+    console.log("Using API Base URL:", BASE_URL);
+    if (!BASE_URL) {
+      setError('⚠️ API base URL missing. Set REACT_APP_BACKEND_URL in .env');
+      return;
+    }
+
     const fetchCustomer = async () => {
       try {
-        const res = await fetch(`/api/customer-details/?cid=${cid}`);
+        const res = await fetch(`${BASE_URL}/api/customer-details/?cid=${cid}`);
+        if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
         const withReceived = data.items.map(item => ({ ...item, received: '' }));
         setCustomer({ ...data, items: withReceived });
       } catch (err) {
-        setError('Failed to fetch customer data');
+        console.error(err);
+        setError('Failed to fetch customer data from backend');
       }
     };
 
     if (cid) fetchCustomer();
-  }, [cid]);
+  }, [cid, BASE_URL]);
 
   const handleReceivedChange = (index, value) => {
     const updated = [...customer.items];
@@ -40,8 +51,9 @@ const DeliveryVerification = () => {
     formData.append("cid", cid);
 
     try {
-      await axios.post("/api/upload-proof-video/", formData);
+      await axios.post(`${BASE_URL}/api/upload-proof-video/`, formData);
     } catch (err) {
+      console.error(err);
       alert("❌ Video upload failed");
     }
   };
@@ -59,27 +71,30 @@ const DeliveryVerification = () => {
     });
 
     try {
-      await fetch('/api/confirm-delivery/', {
+      const res = await fetch(`${BASE_URL}/api/confirm-delivery/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cid: customer.cid, received }),
       });
 
+      if (!res.ok) throw new Error('Failed to confirm delivery');
+
       if (videoBlob) {
         await uploadVideo();
       }
 
-      navigate('/thankyou');
-    } catch {
+      navigate('/ThankYou');
+    } catch (err) {
+      console.error(err);
       alert("❌ Failed to confirm delivery");
     }
   };
 
-  if (error) return <div>{error}</div>;
-  if (!customer) return <div>Loading...</div>;
+  if (error) return <div style={{ padding: 20, color: 'red' }}>{error}</div>;
+  if (!customer) return <div style={{ padding: 20 }}>Loading customer data...</div>;
 
-  const hasMismatch = customer.items.some(item =>
-    item.received !== '' && item.sent !== item.received
+  const hasMismatch = customer.items.some(
+    item => item.received !== '' && item.sent !== item.received
   );
 
   return (
