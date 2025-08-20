@@ -5,6 +5,7 @@ import tempfile
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from django.http import JsonResponse   # 👈 for health check
 
 from googleapiclient.http import MediaFileUpload
 from .drive_setup import drive_service
@@ -12,6 +13,13 @@ from .sheets import fetch_customer_row, update_customer_delivery, update_video_l
 
 # Set up logging
 logger = logging.getLogger(__name__)
+
+
+# ✅ Health check for Render root "/"
+@api_view(['GET'])
+def health_check(request):
+    return JsonResponse({"status": "ok"})
+
 
 @api_view(['GET'])
 def customer_details(request):
