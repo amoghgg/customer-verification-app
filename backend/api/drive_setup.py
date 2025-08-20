@@ -1,29 +1,28 @@
 # backend/api/drive_setup.py
 
 import os
+import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-# Base directory and credentials
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, 'credentials', 'drive_service_account.json')
+# Load service account credentials from environment variable
+SERVICE_ACCOUNT_INFO = json.loads(os.getenv("DRIVE_SERVICE_ACCOUNT", "{}"))
 
 SCOPES = [
-    'https://www.googleapis.com/auth/drive',
-    'https://www.googleapis.com/auth/drive.file',
-    'https://www.googleapis.com/auth/spreadsheets'
+    "https://www.googleapis.com/auth/drive",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/spreadsheets",
 ]
 
-# Auth
-credentials = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE,
-    scopes=SCOPES
+# Authenticate using credentials from env var
+credentials = service_account.Credentials.from_service_account_info(
+    SERVICE_ACCOUNT_INFO, scopes=SCOPES
 )
 
-# Google Drive & Sheets services
-drive_service = build('drive', 'v3', credentials=credentials)
-sheets_service = build('sheets', 'v4', credentials=credentials)
+# Google Drive & Sheets clients
+drive_service = build("drive", "v3", credentials=credentials)
+sheets_service = build("sheets", "v4", credentials=credentials)
 
-# 🔸 These are specific to your spreadsheet
-SHEET_ID = '13PnC6wkTlmyjF4w2njUn4k7glxyb0nXX8D6yMIi5WuE'
-SHEET_NAME = 'SCM FORWARD'
+# 🔸 Spreadsheet details
+SHEET_ID = "13PnC6wkTlmyjF4w2njUn4k7glxyb0nXX8D6yMIi5WuE"
+SHEET_NAME = "SCM FORWARD"
