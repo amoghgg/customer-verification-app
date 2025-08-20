@@ -16,13 +16,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "HOST=0.0.0.0 react-scripts start",
-    "start:ngrok": "SET REACT_APP_BACKEND_URL=https://5394bc912d6f.ngrok-free.app && react-scripts start",
+    "start": "cross-env HOST=0.0.0.0 PORT=3000 react-scripts start",
+    "start:ngrok": "cross-env REACT_APP_BACKEND_URL=https://5394bc912d6f.ngrok-free.app react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "https://5394bc912d6f.ngrok-free.app",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -40,5 +39,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
   }
 }

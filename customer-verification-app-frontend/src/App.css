@@ -1,118 +1,374 @@
-/* === Global Styles === */
-.App {
-  max-width: 880px;
-  margin: auto;
-  padding: 2rem;
-  font-family: 'Segoe UI', 'Roboto', sans-serif;
-  color: #0D254C;
-  background-color: #f9fbfd;
+/* ===============================
+   Design Tokens
+================================ */
+:root {
+  --brand-900: #0D254C;
+  --brand-800: #123466;
+  --brand-600: #1A4B8F;
+  --brand-100: #eaf0f8;
+
+  --accent-600: #00B7EB;
+  --accent-700: #009fcc;
+  --accent-100: #e7f8fd;
+
+  --text-900: #0D254C;
+  --text-700: #274264;
+  --text-500: #5c6f86;
+
+  --bg-50:   #f7f9fc;
+  --bg-100:  #f2f6fb;
+  --white:   #ffffff;
+
+  --border-200: #d9e2ec;
+  --border-300: #c8d3e1;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --shadow-sm: 0 1px 3px rgba(13, 37, 76, 0.08);
+  --shadow-md: 0 6px 16px rgba(13, 37, 76, 0.10);
+  --shadow-lg: 0 14px 28px rgba(13, 37, 76, 0.12);
+
+  --focus: 0 0 0 3px rgba(0, 183, 235, 0.35);
+  --ring: 0 0 0 1px var(--accent-600), 0 0 0 5px rgba(0, 183, 235, 0.18);
+
+  --transition-fast: 140ms cubic-bezier(.2,.6,.2,1);
+  --transition-slow: 260ms cubic-bezier(.2,.6,.2,1);
 }
 
-/* === Logo & Header (optional) === */
+/* Improve font rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===============================
+   Global Styles
+================================ */
+.App {
+  max-width: 960px;              /* + breathing room */
+  margin: 3rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text-900);
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(0,183,235,0.05), transparent 45%),
+    radial-gradient(900px 480px at -10% 0%, rgba(13,37,76,0.05), transparent 40%),
+    var(--bg-50);
+}
+
+/* Optional page title style if you have an h1 inside .App */
+.App h1, .App .page-title {
+  font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+  line-height: 1.15;
+  color: var(--brand-900);
+  letter-spacing: -0.02em;
+  margin: 0 0 1rem;
+}
+
+.App p.lead {
+  color: var(--text-700);
+  margin: 0 0 1.5rem;
+}
+
+/* ===============================
+   Logo & Header (optional)
+================================ */
 .App-logo {
-  height: 40vmin;
+  height: 32vmin;
   pointer-events: none;
+  filter: drop-shadow(0 8px 18px rgba(13,37,76,0.12));
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 18s linear;
   }
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 }
 
-/* === Header === */
+/* ===============================
+   Fullscreen Header (optional)
+================================ */
 .App-header {
-  background-color: #0D254C;
+  background: linear-gradient(135deg, var(--brand-900), var(--brand-600));
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   align-items: center;
   justify-content: center;
   font-size: calc(12px + 2vmin);
-  color: white;
+  color: var(--white);
+  text-align: center;
+  padding: 2rem;
 }
 
-/* === Inputs & Buttons === */
+/* ===============================
+   Inputs & Buttons
+================================ */
 .input-section {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* responsive grid */
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
+@media (max-width: 720px) {
+  .input-section {
+    grid-template-columns: 1fr;
+  }
+}
 
-input[type="text"], input[type="number"] {
-  padding: 10px 14px;
-  font-size: 1rem;
-  border: 1px solid #ccd6e0;
-  border-radius: 6px;
+input[type="text"],
+input[type="number"] {
+  padding: 12px 14px;
+  font-size: 0.98rem;
+  border: 1px solid var(--border-300);
+  border-radius: var(--radius-md);
   width: 100%;
-  background-color: #ffffff;
-  transition: border-color 0.2s;
+  background-color: var(--white);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+input::placeholder {
+  color: var(--text-500);
+  opacity: .9;
+}
+
+input:hover {
+  border-color: var(--brand-600);
 }
 
 input:focus {
-  border-color: #00b7eb;
+  border-color: var(--accent-600);
   outline: none;
+  box-shadow: var(--ring);
 }
 
 button {
-  padding: 10px 18px;
-  background-color: #00B7EB;
-  color: white;
+  padding: 11px 18px;
+  background: linear-gradient(180deg, var(--accent-600), var(--accent-700));
+  color: var(--white);
   border: none;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: .01em;
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  will-change: transform;
 }
 
 button:hover {
-  background-color: #009fcc;
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+button:active {
+  transform: translateY(0);
+  filter: brightness(.98);
+  box-shadow: var(--shadow-sm);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--ring);
+}
+
+button:disabled,
+button[disabled] {
+  opacity: .55;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .submit-btn {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
+  justify-self: start;
 }
 
-/* === Table Styling === */
+/* Optional secondary & ghost buttons (non-breaking addition) */
+.button-secondary {
+  background: var(--brand-900);
+}
+.button-ghost {
+  background: transparent;
+  color: var(--brand-900);
+  border: 1px solid var(--border-300);
+  box-shadow: none;
+}
+.button-ghost:hover { border-color: var(--brand-600); }
+
+/* ===============================
+   Table Styling
+================================ */
 table {
   width: 100%;
-  margin-top: 1.5rem;
-  border-collapse: collapse;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(13, 37, 76, 0.06);
-  border-radius: 6px;
+  margin-top: 1.25rem;
+  border-collapse: separate;          /* for rounded corners */
+  border-spacing: 0;
+  background-color: var(--white);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
-th {
-  background-color: #0D254C;
-  color: white;
+thead th {
+  position: sticky;                   /* sticky header on overflow */
+  top: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, var(--brand-900), var(--brand-800));
+  color: var(--white);
+  font-weight: 700;
+  padding: 12px 14px;
+  text-align: left;
+  letter-spacing: .02em;
+}
+
+th { /* keep compatibility if thead not used */
+  background-color: var(--brand-900);
+  color: var(--white);
   font-weight: 600;
-  padding: 12px;
+  padding: 12px 14px;
   text-align: left;
 }
 
 td {
-  padding: 12px;
-  border-top: 1px solid #e1e7ec;
+  padding: 12px 14px;
+  border-top: 1px solid var(--border-200);
+  color: var(--text-700);
 }
 
-/* === Custom Card (optional use) === */
+/* zebra stripes */
+tbody tr:nth-child(even) td {
+  background-color: var(--bg-100);
+}
+
+/* row hover */
+tbody tr {
+  transition: background-color var(--transition-fast);
+}
+tbody tr:hover td {
+  background-color: var(--accent-100);
+}
+
+/* compact density option */
+.table--dense td,
+.table--dense th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* soft highlight class you can add to important cells */
+td.is-emph {
+  background-color: #fff8e6;
+  color: #8a5700;
+  font-weight: 600;
+}
+
+/* ===============================
+   Custom Card (optional use)
+================================ */
 .card {
-  background-color: white;
-  padding: 1.5rem;
-  border-left: 4px solid #00B7EB;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(13, 37, 76, 0.08);
-  margin-bottom: 1.5rem;
+  background-color: var(--white);
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--accent-600);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1.25rem;
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: .35rem;
+  font-size: 1.05rem;
+  color: var(--brand-900);
+}
+
+.card p {
+  margin: 0;
+  color: var(--text-700);
+}
+
+/* Subtle card hover (non-breaking) */
+.card:hover {
+  transform: translateY(-1px);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===============================
+   Utility (non-breaking)
+================================ */
+.stack-sm > * + * { margin-top: .5rem; }
+.stack-md > * + * { margin-top: 1rem; }
+.stack-lg > * + * { margin-top: 1.5rem; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+/* Status chips you can apply to <span class="chip chip--success">Verified</span> */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4ch;
+  font-size: .85rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--bg-100);
+  color: var(--brand-900);
+  border: 1px solid var(--border-300);
+}
+.chip--success { background: #e9fbef; color: #0a6b3e; border-color: #c9eed6; }
+.chip--warn    { background: #fff8e6; color: #8a5700; border-color: #ffe2a3; }
+.chip--danger  { background: #ffefef; color: #8a0912; border-color: #ffd1d5; }
+
+/* ===============================
+   Reduced Motion Accessibility
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* ===============================
+   Optional Dark Mode
+   (activates if you add .dark on body or .App)
+================================ */
+.App.dark, body.dark .App {
+  color: #e6eef8;
+  background: #0b1426;
+}
+.App.dark table,
+body.dark .App table {
+  background: #0f1b33;
+  box-shadow: none;
+}
+.App.dark thead th, body.dark .App thead th,
+.App.dark th,       body.dark .App th {
+  background: #0b1830;
+}
+.App.dark td, body.dark .App td {
+  border-top-color: rgba(255,255,255,0.08);
+  color: #cfe0ff;
+}
+.App.dark input[type="text"],
+.App.dark input[type="number"] {
+  background: #0f1b33;
+  border-color: rgba(255,255,255,0.16);
+  color: #e6eef8;
+}
+.App.dark .card {
+  background: #0f1b33;
+  border-left-color: var(--accent-600);
 }
